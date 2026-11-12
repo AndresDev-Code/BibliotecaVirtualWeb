@@ -20,6 +20,12 @@ import java.sql.SQLException;
                 );
             }
 
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException("No se encontró el controlador PostgreSQL", e);
+            }
+
             return DriverManager.getConnection(URL, USER, password);
         }
     }

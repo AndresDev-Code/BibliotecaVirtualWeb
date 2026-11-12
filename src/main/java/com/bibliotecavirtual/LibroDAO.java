@@ -3,6 +3,8 @@ package com.bibliotecavirtual;
 
 import com.bibliotecavirtual.config.DatabaseConnection;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LibroDAO {
 
@@ -67,4 +69,31 @@ public class LibroDAO {
             System.out.println("Libros eliminados: " + filas);
         }
     }
+    // Obtener libros para mostrarlos en la página web
+    public List<String[]> obtenerLibros() throws SQLException {
+
+        List<String[]> libros = new ArrayList<>();
+
+        String sql = "SELECT id_libro, titulo, autor FROM libro ORDER BY id_libro";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String[] libro = {
+                        String.valueOf(rs.getInt("id_libro")),
+                        rs.getString("titulo"),
+                        rs.getString("autor")
+                };
+
+                libros.add(libro);
+            }
+        }
+
+        return libros;
+    }
+
+
+
 }
